@@ -103,6 +103,7 @@ for conversation in conversations:
                 date = datetime.fromtimestamp(create_time, tz=timezone.utc).date()
                 message_dates.append(date)
 
+# https://github.com/openai/tiktoken
 tokenizer = tiktoken.encoding_for_model("gpt-4o")
 # assert tokenizer.decode(tokenizer.encode("hello world")) == "hello world"
 
@@ -118,6 +119,9 @@ for message in assistant_messages:
         tokens = tokenizer.encode(message)
         assistant_token_counts.append(len(tokens))
 
+# Number of interactions (responses generated)
+number_of_interactions = len(assistant_messages)
+
 # Number of unique days with messages
 unique_dates = set(message_dates)
 num_unique_days = len(unique_dates)
@@ -128,15 +132,18 @@ total_assistant_tokens = sum(assistant_token_counts)
 input_cost = total_user_tokens * 5/1000000
 output_cost = total_assistant_tokens * 15/1000000
 total_cost = input_cost + output_cost
+average_interactions = number_of_interactions / num_unique_days
 average_cost_per_day = total_cost / num_unique_days
 average_cost_per_month = average_cost_per_day * 365 / 12
 
 # Display the total for each array
+print("Total Interactions:", number_of_interactions)
 print("Total Input Tokens:", total_user_tokens)
 print("Total Output Tokens:", total_assistant_tokens)
 print("Total Input Cost:", input_cost)
 print("Total Output Cost:", output_cost)
 print("Total Cost:", total_cost)
 print("Days of Use:", num_unique_days)
+print("Number of interactions per day: ", average_interactions)
 print("Average Cost Per Day:",average_cost_per_day)
 print("Average Cost Per Month:", average_cost_per_month)
