@@ -103,7 +103,8 @@ for conversation in conversations:
                 date = datetime.fromtimestamp(create_time, tz=timezone.utc).date()
                 message_dates.append(date)
 
-tokenizer = tiktoken.get_encoding("o200k_base")
+tokenizer = tiktoken.encoding_for_model("gpt-4o")
+# assert tokenizer.decode(tokenizer.encode("hello world")) == "hello world"
 
 # Calculate tokens for user messages
 for message in user_messages:
